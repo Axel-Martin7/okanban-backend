@@ -29,7 +29,7 @@ Si on veut rajouter un deuxième repo distant (remote), il va falloir faire :
 
 Par exemple, si je veux lier le remote du prof à mon projet local :
 
-`git remote add prof git@github.com:O-clock-Ohm/S06-oKanban-BLUE.git`
+`git remote add prof git@github.com:O-clock-Starship/S06-oKanban-backend.git`
 
 On peut vérifier qu'il a bien été ajouté à notre repo local avec la commande `git remote -v`
 
