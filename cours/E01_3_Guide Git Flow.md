@@ -17,7 +17,7 @@ On peut aussi l'utiliser en mode feature par feature, mais ce qui va nous intér
 
 ## Première étape, le multi-remote
 
-Le multi remote, c'est lorsqu'un projet local git est lié à plusieurs repo distants (remotes) (cf [Schéma vu en cockpit](./E01_2_Schéma Monolithique vs API.md))
+Le multi remote, c'est lorsqu'un projet local git est lié à plusieurs repo distants (remotes) (cf [Schéma vu en cockpit](/E01_2_Schéma-Monolithique-vs-API.png) )
 
 Ici, notre repo local a été créé grâce à `git clone`.
 
