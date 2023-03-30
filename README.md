@@ -1,10 +1,46 @@
-# oKanban : Atelier Conception
+# oKanban
 
-## JOUR 2
+## jour 3 : Mise en place API
+
+### Archi
+
+Mettre en place l'architecture "classique" d'une projet express :
+
+- installer les dépendances nécessaires avec npm.
+- dossier `app/controllers`.
+- fichier `app/router.js`.
+- point d'entrée `index.js`.
+
+### Le Train-train Express
+
+Mettre en place le fichier `index.js`. Oui c'est vrai, c'est un peu toujours la même chose...
+
+Note: pensez qu'on va faire des routes POST ! (donc avec des body ...)
+
+### Premiers controller, premières routes
+
+En respectant au maximum les principes de l'architecture REST, et [le tableau de routes fait ensemble](./doc/routes_REST.md), implémentez tout ce que vous pouvez !
+
+- commencez plutôt par les routes GET
+- puis les POST
+- puis les PATCH
+- et enfin les DELETE
+- ceci n'est qu'un conseil ! si vous préférez faire toutes les "/list" d'abord, libre à vous !
+
+Pour tester toutes ces routes, il existe plusieurs solutions, mais la plus simple reste d'utiliser un petit logiciel :
+
+- [Insomnia](https://support.insomnia.rest/article/23-installation#ubuntu)
+- [POSTMAN](https://www.getpostman.com/)
+- [VSC REST client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client)
+- y'en a probablement d'autres...
+
+---
+
+## jour 2 : BDD
 
 ### De "concept" à "logique"
 
-En se basant sur le MCD et en utilisant [les règles basiques de transformation en MLD](https://kourou.oclock.io/ressources/fiche-recap/mld/), lister dans le fichier `doc/tables.md` les tables à créer ainsi que les champs qu'elles vont contenir.
+En se basant sur le MCD et en utilisant [les règles basiques de transformation en MLD](https://github.com/O-clock-Alumni/fiches-recap/blob/master/bdd/conception-04-mld.md), lister dans le fichier [doc/tables.md](./doc/tables.md) les tables à créer ainsi que les champs qu'elles vont contenir.
 
 Ne pas oublier de typer chaque champ de chaque table ! [Ici, la liste des types supportés par postgresl](https://www.postgresql.org/docs/9.2/datatype.html#DATATYPE-TABLE).
 
@@ -12,13 +48,13 @@ Ne pas oublier de typer chaque champ de chaque table ! [Ici, la liste des types 
 
 Commencer par créer un utilisateur et une base de données pour notre projet.
 
-[La fiche récap est ici](https://kourou.oclock.io/ressources/fiche-recap/postgresql/).
+[La fiche récap est ici](https://github.com/O-clock-Alumni/fiches-recap/blob/master/bdd/confg-postgres.md).
 
 ### Fichier de Définition des Données
 
 Une fois les tables listées, il est temps d'écrire un fichier SQL qui va contenir toutes les instructions pour créer ces tables!
 
-Garder la [fiche récap SQL](https://kourou.oclock.io/ressources/fiche-recap/le-langage-sql/) sous le coude est une bonne idée :wink:
+Garder la [fiche récap SQL](https://github.com/O-clock-Alumni/fiches-recap/blob/master/bdd/sql.md) sous le coude est une bonne idée :wink:
 
 Quelques règles de base :
 
