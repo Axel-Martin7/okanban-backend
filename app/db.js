@@ -1,19 +1,18 @@
-const {Sequelize} = require('sequelize');
+const { Sequelize } = require("sequelize"); //                                     J'importe Sequelize
 
-// Si on met en place dotenv sur ce fichier, il va chercher le fichier .env dans /app. Or le fichier .env est à la racine du projet. 
-// On attendra de finir l'atelier jour 3 pour mettre en place dotenv dans notre index.js (c'est a dire le fichier point d'entrée)
-
-// On charge l'url PG
-const PG_URL = process.env.PG_URL || "postgres://okanban2:okanban@localhost:5432/okanban2";
-
+const PG_URL =
+  process.env.PG_URL || "postgres://okanban1:okanban1@localhost:5432/okanban1"; // On charge l'url PG.
+//                                                                                 Si je met en place dotenv sur le fichier, il va chercher le fichier .env dans /app. Or le .env est à la racine du projet.
+//                                                                                 Je metterais en place le dotenv plus tard dans mon index.js (point d'entrée)
+//                                                                                 En attendant, je met une valeur de secour.
 const defineAttributes = {
-    define: {
-        underscored: true,          // On indique à sequelize de passer en mode snake case
-        createdAt: "created_at",    // On indique à sequelize la syntaxe pour nos timestamps
-        updatedAt: "updated_at",
-    }
-}
+  define: {
+    underscored: true, //                                                          On indique à Sequelize de passer en mode snake case.
+    createdAt: "created_at", //                                                    On indique à Sequelize la syntaxe pour nos timestampz
+    updatedAt: "updated_at",
+  },
+};
 
-const sequelize = new Sequelize(PG_URL, defineAttributes);
+const sequelize = new Sequelize(PG_URL, defineAttributes); //                      Création de l'instance Sequelize en utilisant l'URL de la BDD et les options définie.
 
-module.exports = sequelize;
+module.exports = sequelize; //                                                     On exporte Sequelize
