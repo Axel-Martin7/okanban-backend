@@ -35,8 +35,8 @@ CREATE TABLE "tag" (
 CREATE TABLE "card_has_tag" (
   "card_id" INTEGER NOT NULL REFERENCES card("id") ON DELETE CASCADE, -- si l'on veut pouvoir supprimer une carte ou un tag, on est obligé de rajouter "ON DELETE CASCADE" qui aura pour conséquence de supprimer les associations qui font référence a la carte ou le tag supprimé.
   "tag_id" INTEGER NOT NULL REFERENCES tag("id") ON DELETE CASCADE,   -- Colonne "tag_id" de type entier, non nulle, faisant référence à la colonne "id" de la table "tag" avec une action "ON DELETE CASCADE"
-  "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW()                     -- Colonne "created_at" de type "timestampz" non nulle avec la valeur par défaut de la date et de l'heure actuelles
-                                                                      -- ici pas d'updated_at car une relation ne se met pas à jour, soit on l'ajoute soit on la supprime
+  "created_at" TIMESTAMPTZ NOT NULL DEFAULT NOW(),                     -- Colonne "created_at" de type "timestampz" non nulle avec la valeur par défaut de la date et de l'heure actuelles
+  "updated_at" TIMESTAMPTZ                                                              
   );     
 
 /*SEEDING - Une fois les tables crées, on va les remplir */
