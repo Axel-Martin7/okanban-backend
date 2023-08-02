@@ -80,6 +80,23 @@ const tagController = {
       res.status(500).json(error.toString());
     }
   },
+
+  /*---------- Supression d'un tag ----------- */
+  deleteTag: async (req, res) => {
+    try {
+      const tagId = req.params.id;
+      let tag = await Tag.findByPk(tagId);
+      if (!tag) {
+        res.status(404).json("Can not find tag with id" + tagId);
+      } else {
+        await tag.destroy();
+        res.status(200).json("Ok");
+      }
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
 };
 
 module.exports = tagController;
