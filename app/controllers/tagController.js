@@ -66,7 +66,7 @@ const tagController = {
         res.status(404).json("Can not find tag with id" + tagId);
       } else {
         if (name) {
-          //                                               Si la nouvelle valeur 'name' est présente dans le corps de la requête, met à jour la propriété 'name' de l'objet tag avec cette nouvelle valeur.
+          //                                                         Si la nouvelle valeur 'name' est présente dans le corps de la requête, met à jour la propriété 'name' de l'objet tag avec cette nouvelle valeur.
           tag.name = name;
         }
         if (color) {
@@ -84,7 +84,7 @@ const tagController = {
   /*---------- Supression d'un tag ----------- */
   deleteTag: async (req, res) => {
     try {
-      const tagId = req.params.id; //                     Récupération de l'ID du tag à supprimer à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
+      const tagId = req.params.id; //                                Récupération de l'ID du tag à supprimer à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
       let tag = await Tag.findByPk(tagId);
       if (!tag) {
         res.status(404).json("Can not find tag with id" + tagId);
@@ -102,24 +102,50 @@ const tagController = {
   associateTagToCard: async (req, res) => {
     try {
       console.log(req.body);
-      const cardId = req.params.id; //                     Récupération de l'ID de la carte à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
-      const tagId = req.body.tag_id; //                    Récupération de l'ID du tag à associer à la carte à partir du corps de la requête.
+      const cardId = req.params.id; //                                Récupération de l'ID de la carte à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
+      const tagId = req.body.tag_id; //                               Récupération de l'ID du tag à associer à la carte à partir du corps de la requête.
 
       let card = await Card.findByPk(cardId, {
-        include: ["tags"], //                              Recherche de la carte spécifique dans la bdd en utilisant l'ID de la carte, en incluant également ses tags associés dans le résultat.
+        include: ["tags"], //                                         Recherche de la carte spécifique dans la bdd en utilisant l'ID de la carte, en incluant également ses tags associés dans le résultat.
       });
       if (!card) {
         return res.status(404).json("Can not find card with id" + cardId);
       }
 
-      let tag = await Tag.findByPk(tagId); //              Recherche du tag spécifique dans la base de données en utilisant l'ID du tag.
+      let tag = await Tag.findByPk(tagId); //                         Recherche du tag spécifique dans la base de données en utilisant l'ID du tag.
       if (!tag) {
         return res.status(404).json("Can not find card with id" + cardId);
       }
 
-      await card.addTag(tag); //                           Associe le tag à la carte en utilisant la méthode addTag() fournie automatiquement par Sequelize lorsqu'une relation many-to-many est définie entre les modèles.
+      await card.addTag(tag); //                                      Associe le tag à la carte en utilisant la méthode addTag() fournie automatiquement par Sequelize lorsqu'une relation many-to-many est définie entre les modèles.
       card = await Card.findByPk(cardId, {
-        include: ["tags"], //                              Après avoir associé le tag à la carte, on recherche à nouveau la carte dans la base de données, en incluant cette fois ses tags associés dans le résultat.
+        include: ["tags"], //                                         Après avoir associé le tag à la carte, on recherche à nouveau la carte dans la base de données, en incluant cette fois ses tags associés dans le résultat.
+      });
+      res.status(200).json(card);
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
+
+  /*---------- Dissociation d'un tag d'une carte ----------- */
+  removeTagFromCard: async (req, res) => {
+    try {
+      const { cardId, tagId } = req.params; //                        Récupération des ID de la carte et du tag à partir des paramètres de la requête (les identifiants sont passés dans l'URL).
+
+      let card = await Card.findByPk(cardId); //                      Recherche de la carte spécifique dans la base de données en utilisant l'ID de la carte.
+      if (!card) {
+        return res.status(404).json("Can not find card with id" + cardId); // Si la carte n'est pas trouvée dans la base de données, renvoie une réponse avec un code de statut 404 (Not Found) et un message indiquant que la carte n'a pas été trouvée.
+      }
+
+      let tag = await Tag.findByPk(tagId); //                         Recherche du tag spécifique dans la base de données en utilisant l'ID du tag.
+      if (!tag) {
+        return res.status(404).json("Can not find tag with id" + tagId); // Si le tag n'est pas trouvé dans la base de données, renvoie une réponse avec un code de statut 404 (Not Found) et un message indiquant que le tag n'a pas été trouvé.
+      }
+
+      await card.removeTag(tag); //                                   Dissocie le tag de la carte en utilisant la méthode removeTag() fournie automatiquement par Sequelize lorsqu'une relation many-to-many est définie entre les modèles.
+      card = await Card.findByPk(cardId, {
+        include: ["tags"], //                                         Après avoir dissocié le tag de la carte, on recherche à nouveau la carte dans la base de données, en incluant cette fois ses tags associés dans le résultat.
       });
       res.status(200).json(card);
     } catch (error) {
