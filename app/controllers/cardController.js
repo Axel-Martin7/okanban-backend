@@ -46,7 +46,7 @@ const cardController = {
     }
   },
 
-  /*---------- Création d'une carte ---------------------- */
+  /*---------- Création d'une carte ----------------------------------- */
   createCard: async (req, res) => {
     try {
       const { title, color, position, list_id } = req.body; //            Récupération des paramètres du corps de la requête
@@ -70,6 +70,35 @@ const cardController = {
         }
         await newCard.save(); //                                          On enregistre la nouvelle carte dans la base de données.
         res.json(newCard); //                                             Une fois la carte enregistrée, on renvoie la nouvelle carte au format JSON en réponse à la requête.
+      }
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
+  /*---------- Modification d'une carte ----------------------------- */
+  modifyCard: async (req, res) => {
+    try {
+      const cardId = req.params.id; //                                    Récupération de l'ID de la carte à modifier depuis les paramètres de la requête.
+      const card = await Card.findByPk(cardId); //                        Recherche de la carte dans la base de données en utilisant son ID.
+      if (!card) {
+        res.status(404).send("cant find card" + cardId); //               Si la carte n'existe pas dans la base de données, Réponse avec un code 404 (Not Found) et un message indiquant que la carte n'a pas été trouvée.
+      } else {
+        const { title, color, list_id, position } = req.body; //          Récupération des nouvelles informations de la carte à partir du corps de la requête.
+        if (title) {
+          card.title = title; //                                          Si 'title' est présent dans le corps de la requête, on met à jour le titre de la carte avec la nouvelle valeur.
+        }
+        if (list_id) {
+          card.list_id = list_id; //                                      Si 'list_id' est présent dans le corps de la requête, on met à jour l'ID de la liste associée à la carte avec la nouvelle valeur.
+        }
+        if (color) {
+          card.color = color; //                                          Si 'color' est présent dans le corps de la requête, on met à jour la couleur de la carte avec la nouvelle valeur.
+        }
+        if (position) {
+          card.position = position; //                                    Si 'position' est présent dans le corps de la requête, on met à jour la position de la carte avec la nouvelle valeur.
+        }
+        await card.save(); //                                             Enregistrement des modifications de la carte dans la base de données.
+        res.status(200).json(card); //                                    Réponse avec un code 200 (OK) et renvoie de la carte mise à jour sous forme de JSON.
       }
     } catch (error) {
       console.trace(error);
