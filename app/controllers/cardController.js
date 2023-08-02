@@ -45,4 +45,35 @@ const cardController = {
       res.status(500).json(error.toString());
     }
   },
+
+  /*---------- Création d'une carte ---------------------- */
+  createCard: async (req, res) => {
+    try {
+      const { title, color, position, list_id } = req.body; //            Récupération des paramètres du corps de la requête
+      let bodyErrors = []; //                                             Création d'un tableau pour stocker les éventuelles erreurs liées aux paramètres du corps de la requête.
+      if (!title) {
+        bodyErrors.push("title can not be empty"); //                     Vérification si le paramètre 'title' est présent dans le corps de la requête. Si non, on ajoute une erreur au tableau 'bodyErrors'.
+      }
+      if (!list_id) {
+        bodyErrors.push("list_id can not be empty"); //                   Vérification si le paramètre 'list_id' est présent dans le corps de la requête. Si non, on ajoute une erreur au tableau 'bodyErrors'.
+      }
+
+      if (bodyErrors.length) {
+        res.status(400).json(bodyErrors); //                              Si le tableau 'bodyErrors' contient des erreurs, on renvoie une réponse avec le code d'erreur 400 (Bad Request) et on envoie les erreurs au format JSON.
+      } else {
+        let newCard = Card.build({ title, list_id }); //                  Sinon, si les paramètres sont valides, on crée une nouvelle instance de la classe 'Card' avec les paramètres 'title' et 'list_id'.
+        if (color) {
+          newCard.color = color; //                                       Si le paramètre 'color' est présent dans le corps de la requête, on l'ajoute à la nouvelle carte.
+        }
+        if (position) {
+          newCard.position = position; //                                 Si le paramètre 'position' est présent dans le corps de la requête, on l'ajoute à la nouvelle carte.
+        }
+        await newCard.save(); //                                          On enregistre la nouvelle carte dans la base de données.
+        res.json(newCard); //                                             Une fois la carte enregistrée, on renvoie la nouvelle carte au format JSON en réponse à la requête.
+      }
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
 };
