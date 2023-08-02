@@ -84,7 +84,7 @@ const tagController = {
   /*---------- Supression d'un tag ----------- */
   deleteTag: async (req, res) => {
     try {
-      const tagId = req.params.id;
+      const tagId = req.params.id; //                     Récupération de l'ID du tag à supprimer à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
       let tag = await Tag.findByPk(tagId);
       if (!tag) {
         res.status(404).json("Can not find tag with id" + tagId);
@@ -92,6 +92,36 @@ const tagController = {
         await tag.destroy();
         res.status(200).json("Ok");
       }
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
+
+  /*---------- Association d'un tag à une carte ----------- */
+  associateTagToCard: async (req, res) => {
+    try {
+      console.log(req.body);
+      const cardId = req.params.id; //                     Récupération de l'ID de la carte à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
+      const tagId = req.body.tag_id; //                    Récupération de l'ID du tag à associer à la carte à partir du corps de la requête.
+
+      let card = await Card.findByPk(cardId, {
+        include: ["tags"], //                              Recherche de la carte spécifique dans la bdd en utilisant l'ID de la carte, en incluant également ses tags associés dans le résultat.
+      });
+      if (!card) {
+        return res.status(404).json("Can not find card with id" + cardId);
+      }
+
+      let tag = await Tag.findByPk(tagId); //              Recherche du tag spécifique dans la base de données en utilisant l'ID du tag.
+      if (!tag) {
+        return res.status(404).json("Can not find card with id" + cardId);
+      }
+
+      await card.addTag(tag); //                           Associe le tag à la carte en utilisant la méthode addTag() fournie automatiquement par Sequelize lorsqu'une relation many-to-many est définie entre les modèles.
+      card = await Card.findByPk(cardId, {
+        include: ["tags"], //                              Après avoir associé le tag à la carte, on recherche à nouveau la carte dans la base de données, en incluant cette fois ses tags associés dans le résultat.
+      });
+      res.status(200).json(card);
     } catch (error) {
       console.trace(error);
       res.status(500).json(error.toString());
