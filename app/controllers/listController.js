@@ -104,11 +104,13 @@ const listController = {
   /*---------- Suppression d'une liste ----------------- */
   deleteList: async (req, res) => {
     try {
-      const listId = req.params.id; //                      Récupération de l'ID de la liste à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
-      const list = await List.findByPk(listId); //          Recherche de la liste spécifique dans la base de données en utilisant la méthode findByPk du modèle List.
+      const listId = req.params.id; //                       Récupération de l'ID de la liste à partir des paramètres de la requête (l'identifiant est passé dans l'URL).
+      const list = await List.findByPk(listId); //           Recherche de la liste spécifique dans la base de données en utilisant la méthode findByPk du modèle List.
       if (list) {
-        await list.destroy(); //                            Si la liste existe, supprimer la liste de la base de données en utilisant la méthode destroy().
-        res.status(200).json("Ok"); //                      Puis, Répondre avec un code HTTP 200 (OK) et envoyer une réponse 'Ok' au format JSON.
+        await list.destroy(); //                             Si la liste existe, supprimer la liste de la base de données en utilisant la méthode destroy().
+        res.status(200).json("Ok"); //                       Puis, Répondre avec un code HTTP 200 (OK) et envoyer une réponse 'Ok' au format JSON.
+      } else {
+        res.status(404).json(`List with ID ${listId} not found`); // Si la liste n'est pas trouvée Réponse avec un code 404 (Not Found) et un message indiquant que la liste n'a pas été trouvée.
       }
     } catch (error) {
       console.trace(error);

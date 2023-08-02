@@ -105,4 +105,23 @@ const cardController = {
       res.status(500).json(error.toString());
     }
   },
+
+  /*---------- Suppression d'une carte ----------------------------- */
+  deleteCard: async (req, res) => {
+    try {
+      const cardId = req.params.id; //                                  Récupération de l'ID de la carte à supprimer depuis les paramètres de la requête.
+      const card = await Card.findByPk(cardId); //                      Recherche de la carte dans la base de données en utilisant son ID.
+      if (card) {
+        await card.destroy(); //                                        Si la carte est trouvée, Suppression de la carte de la base de données.
+        res.status(200).json("Ok"); //                                  Réponse avec un code 200 (OK) et un message "Ok" indiquant que la carte a été supprimée avec succès.
+      } else {
+        res.status(404).json(`Card with ID ${cardId} not found`); //    Si la carte n'est pas trouvée, Réponse avec un code 404 (Not Found) et un message indiquant que la carte n'a pas été trouvée.
+      }
+    } catch (error) {
+      console.trace(error);
+      res.status(500).json(error.toString());
+    }
+  },
 };
+
+module.exports = cardController; //                                     Export du controller listController.
