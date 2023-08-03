@@ -131,7 +131,8 @@ const tagController = {
   /*---------- Dissociation d'un tag d'une carte ----------- */
   removeTagFromCard: async (req, res) => {
     try {
-      const { cardId, tagId } = req.params; //                        Récupération des ID de la carte et du tag à partir des paramètres de la requête (les identifiants sont passés dans l'URL).
+      const cardId = req.params.cardid; //                            Récupére l'ID de la carte à partir de l'URL.
+      const tagId = req.params.tagid; //                              Récupére l'ID du tag à partir de l'URL.
 
       let card = await Card.findByPk(cardId); //                      Recherche de la carte spécifique dans la base de données en utilisant l'ID de la carte.
       if (!card) {

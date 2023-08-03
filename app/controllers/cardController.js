@@ -33,9 +33,7 @@ const cardController = {
         include: "tags", //                                                Inclut les tags associés à la carte.
         order: [["position", "ASC"]], //                                   Trie les tags par leur position en ordre croissant.
       });
-      if (!card.length) {
-        //                                                                 J'utilise le .length car 'card' est un objet représentant une seule carte, on vérifie si c'est 'null'.
-        //                                                                 Dans la méthode 'getCardsInList' j'utilise seulement '(!cards)' car 'cards' est un tableau de cartes, et je vérifie si il est vide.
+      if (!card) {
         res.status(404).json("Can't find card with id" + cardId); //       Si aucune carte n'est trouvée, renvoie une réponse avec le code 404 (Not Found).
       } else {
         res.json(card); //                                                 Sinon, renvoie la carte trouvée au format JSON en réponse à la requête.
